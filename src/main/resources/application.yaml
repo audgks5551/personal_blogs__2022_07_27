@@ -1,0 +1,27 @@
+server:
+  port: 9999
+
+spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:templates/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB53Dialect
+
+logging:
+  level:
+    root: info
+
+---
+
+spring:
+  profiles:
+    active: prod
+
+---
+
+spring:
+  profiles:
+    active: local
