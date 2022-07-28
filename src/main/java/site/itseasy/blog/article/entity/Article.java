@@ -3,6 +3,8 @@ package site.itseasy.blog.article.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import site.itseasy.base.ModelMapperUtils;
+import site.itseasy.blog.article.dto.ArticleDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,5 +34,14 @@ public class Article {
     public Article(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public ArticleDto toDto() {
+        return ModelMapperUtils.getModelMapper().map(this, ArticleDto.class);
+    }
+
+    public Article modifyByDto(ArticleDto articleDto) {
+        ModelMapperUtils.getModelMapper().map(articleDto, this);
+        return this;
     }
 }
