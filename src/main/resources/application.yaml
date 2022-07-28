@@ -18,6 +18,12 @@ logging:
 
 spring:
   profiles:
+    active: test
+
+---
+
+spring:
+  profiles:
     active: prod
 
 ---
