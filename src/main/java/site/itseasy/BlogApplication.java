@@ -1,4 +1,4 @@
-package site.itseasy.blog;
+package site.itseasy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
