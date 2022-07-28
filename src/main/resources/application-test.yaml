@@ -1,0 +1,10 @@
+spring:
+  thymeleaf:
+    cache: true
+  datasource:
+    url: jdbc:mariadb://172.17.0.2:3306/blog1_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&allowPublicKeyRetrieval=true
+    username: testuser
+    password: 5678
+  jpa:
+    hibernate:
+      ddl-auto: create
