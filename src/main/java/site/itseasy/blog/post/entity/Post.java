@@ -1,10 +1,10 @@
-package site.itseasy.blog.article.entity;
+package site.itseasy.blog.post.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import site.itseasy.base.ModelMapperUtils;
-import site.itseasy.blog.article.dto.ArticleDto;
+import site.itseasy.blog.post.dto.PostDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +17,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Article {
+public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "article_id", updatable = false)
+    @Column(name = "post_id", updatable = false)
     private Long id;
 
     @Setter
@@ -31,16 +31,16 @@ public class Article {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    public Article(String title, String content) {
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public ArticleDto toDto() {
-        return ModelMapperUtils.getModelMapper().map(this, ArticleDto.class);
+    public PostDto toDto() {
+        return ModelMapperUtils.getModelMapper().map(this, PostDto.class);
     }
 
-    public Article modifyByDto(ArticleDto articleDto) {
+    public Post modifyByDto(PostDto articleDto) {
         ModelMapperUtils.getModelMapper().map(articleDto, this);
         return this;
     }

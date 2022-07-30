@@ -3,7 +3,6 @@ server:
 
 spring:
   thymeleaf:
-    enabled: true
     prefix: classpath:templates/
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -18,7 +17,7 @@ logging:
 
 spring:
   profiles:
-    active: test
+    active: dev
 
 ---
 

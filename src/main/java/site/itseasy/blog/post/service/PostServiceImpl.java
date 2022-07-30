@@ -1,26 +1,27 @@
-package site.itseasy.blog.article.service;
+package site.itseasy.blog.post.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.itseasy.blog.article.dto.ArticleDto;
-import site.itseasy.blog.article.entity.Article;
-import site.itseasy.blog.article.repository.ArticleRepository;
+import site.itseasy.blog.post.dto.PostDto;
+import site.itseasy.blog.post.entity.Post;
+import site.itseasy.blog.post.repository.PostRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ArticleServiceImpl implements ArticleService {
+public class PostServiceImpl implements PostService {
 
-    private final ArticleRepository articleRepository;
+    private final PostRepository articleRepository;
 
     @Override
-    public ArticleDto register(ArticleDto articleDto) {
-        Article article = articleDto.toEntity();
+    public PostDto register(PostDto articleDto) {
+        Post article = articleDto.toEntity();
 
         articleRepository.save(article);
 
@@ -44,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDto modify(ArticleDto articleDto) {
+    public PostDto modify(PostDto articleDto) {
         Long id = articleDto.getId();
 
         if (id == null || id < 1) {
@@ -59,9 +60,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> listAll() {
+    public List<PostDto> listAll() {
         return articleRepository.findAll()
                 .stream().map(article -> article.toDto())
-                .toList();
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto findById(Long postId) {
+        return articleRepository.findById(postId).get().toDto();
     }
 }
