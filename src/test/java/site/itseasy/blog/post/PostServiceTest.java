@@ -93,7 +93,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void 게시글을_수정할때_게시글이_없으면_null_반환() {
+    public void 게시글을_수정할때_게시글이_없으면_게시글_생성() {
         // given
         PostDto postDto = new PostDto(1L, "제목1", "내용1");
 
@@ -101,7 +101,7 @@ public class PostServiceTest {
         PostDto modifiedPostDto = postService.modify(postDto);
 
         // given
-        assertThat(modifiedPostDto).isNull();
+        assertThat(modifiedPostDto).isNotNull();
     }
 
     @Test

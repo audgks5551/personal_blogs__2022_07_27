@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private final PostRepository articleRepository;
+    private final PostRepository repository;
 
     @Override
     public PostDto register(PostDto articleDto) {
         Post article = articleDto.toEntity();
 
-        articleRepository.save(article);
+        repository.save(article);
 
         return article.toDto();
     }
@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean deleteById(Long id) {
         try {
-            articleRepository.deleteById(id);
+            repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             log.info("{}", e);
             return false;
@@ -53,21 +53,20 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
-        return articleRepository.findById(id)
-                .map(article -> article.modifyByDto(articleDto))
-                .map(article -> article.toDto())
-                .orElse(null);
+        return repository.findById(id)
+                .map(article -> article.modifyByDto(articleDto).toDto())
+                .orElseGet(() -> this.register(articleDto));
     }
 
     @Override
     public List<PostDto> listAll() {
-        return articleRepository.findAll()
+        return repository.findAll()
                 .stream().map(article -> article.toDto())
                 .collect(Collectors.toList());
     }
 
     @Override
     public PostDto findById(Long postId) {
-        return articleRepository.findById(postId).get().toDto();
+        return repository.findById(postId).get().toDto();
     }
 }

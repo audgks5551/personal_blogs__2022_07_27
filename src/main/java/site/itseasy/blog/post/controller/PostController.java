@@ -3,6 +3,7 @@ package site.itseasy.blog.post.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.itseasy.blog.post.assembler.PostModelAssembler;
@@ -24,7 +25,11 @@ public class PostController {
     public ResponseEntity<EntityModel<ResponsePost>> newPost(@RequestBody PostForm articleForm) {
         PostDto postDto = service.register(articleForm.toDto());
 
-        return ResponseEntity.ok(assembler.toModel(postDto));
+        EntityModel<ResponsePost> entityModel = assembler.toModel(postDto);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
     }
 
     @GetMapping("/posts/{postId}")

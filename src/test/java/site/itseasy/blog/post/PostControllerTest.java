@@ -59,7 +59,7 @@ public class PostControllerTest {
 
         // then
         resultActions
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(notNullValue())))
                 .andExpect(jsonPath("$.title", is(notNullValue())))
                 .andExpect(jsonPath("$.content", is(notNullValue())));
