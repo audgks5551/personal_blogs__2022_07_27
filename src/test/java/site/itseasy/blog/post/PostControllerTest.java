@@ -14,8 +14,7 @@ import site.itseasy.blog.post.form.PostForm;
 import site.itseasy.blog.post.service.PostService;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -51,7 +50,7 @@ public class PostControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                post("/new")
+                post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(articleForm))
                         .accept(MediaType.APPLICATION_JSON))
@@ -105,5 +104,66 @@ public class PostControllerTest {
                 .andExpect(jsonPath("$._embedded.responsePostList[0].id").value(postDto1.getId()))
                 .andExpect(jsonPath("$._embedded.responsePostList[0].title").value(postDto1.getTitle()))
                 .andExpect(jsonPath("$._embedded.responsePostList[0].content").value(postDto1.getContent()));
+    }
+
+    @Test
+    public void 게시글_수정() throws Exception {
+        // given
+        PostDto postDto = postService.register(new PostDto("제목1", "내용1"));
+
+        PostForm postForm = new PostForm("제목2", "내용1");
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                        put("/posts/%d".formatted(postDto.getId()))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(postForm))
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(postDto.getId()))
+                .andExpect(jsonPath("$.title").value(postForm.getTitle()))
+                .andExpect(jsonPath("$.content").value(postForm.getContent()));
+    }
+
+    @Test
+    public void 게시글_삭제() throws Exception {
+        // given
+        PostDto postDto = postService.register(new PostDto("제목1", "내용1"));
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                        delete("/posts/%d".formatted(postDto.getId()))
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void 게시글_수정할_때_게시글이_없으면_생성() throws Exception {
+        // given
+        Long postId = 1000L;
+        PostForm postForm = new PostForm("제목2", "내용1");
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                        put("/posts/%d".formatted(postId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(postForm))
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.title").value(postForm.getTitle()))
+                .andExpect(jsonPath("$.content").value(postForm.getContent()));
     }
 }

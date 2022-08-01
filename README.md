@@ -1,6 +1,6 @@
-# 2022.07.31
+# 2022.08.01
 ## TODO
- 1. 게시글 수정, 삭제 rest controller 구현
+ 1. 게시글 수정, 삭제 rest controller 구현 (완료)
 
 # 2022.07.29
 ## TODO
