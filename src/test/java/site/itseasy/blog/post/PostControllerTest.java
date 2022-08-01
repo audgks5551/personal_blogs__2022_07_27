@@ -1,6 +1,7 @@
 package site.itseasy.blog.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import site.itseasy.blog.post.dto.PostDto;
 import site.itseasy.blog.post.form.PostForm;
+import site.itseasy.blog.post.repository.PostRepository;
 import site.itseasy.blog.post.service.PostService;
 
 import static org.hamcrest.Matchers.*;
@@ -30,6 +32,9 @@ public class PostControllerTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Test
     public void mock_테스트() throws Exception {
@@ -162,7 +167,6 @@ public class PostControllerTest {
         // then
         resultActions
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.title").value(postForm.getTitle()))
                 .andExpect(jsonPath("$.content").value(postForm.getContent()));
     }

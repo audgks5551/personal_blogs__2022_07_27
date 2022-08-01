@@ -57,7 +57,11 @@ public class PostController {
         PostDto modifiedPostDto = service.modify(postDto);
 
         if (modifiedPostDto.getId() != postId) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toModel(modifiedPostDto));
+            EntityModel<ResponsePost> entityModel = assembler.toModel(modifiedPostDto);
+
+            return ResponseEntity
+                    .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                    .body(entityModel);
         }
 
         return ResponseEntity.ok(assembler.toModel(modifiedPostDto));
