@@ -1,3 +1,7 @@
+# 2022.08.02
+## TODO
+ 1. springdoc으로 문서 만들기
+
 # 2022.08.01
 ## TODO
  1. 게시글 수정, 삭제 rest controller 구현 (완료)
